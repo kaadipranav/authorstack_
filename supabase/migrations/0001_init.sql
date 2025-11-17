@@ -49,6 +49,7 @@ create table if not exists public.books (
 );
 
 create index if not exists books_profile_idx on public.books (profile_id);
+create index if not exists books_launch_date_idx on public.books (profile_id, coalesce(launch_date, '1970-01-01'::date));
 
 create table if not exists public.platform_connections (
   id uuid primary key default gen_random_uuid(),

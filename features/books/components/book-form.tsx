@@ -11,15 +11,36 @@ import { createBookAction, updateBookAction } from "@/lib/books/actions";
 type BookFormProps = {
   mode?: "create" | "edit";
   bookId?: string;
+  defaultValues?: {
+    title?: string | null;
+    subtitle?: string | null;
+    description?: string | null;
+    format?: string | null;
+    status?: string | null;
+    launch_date?: string | null;
+  };
 };
 
-export function BookForm({ mode = "create", bookId }: BookFormProps) {
+const formatOptions = [
+  { value: "ebook", label: "eBook" },
+  { value: "paperback", label: "Paperback" },
+  { value: "hardcover", label: "Hardcover" },
+  { value: "audiobook", label: "Audiobook" },
+];
+
+const statusOptions = [
+  { value: "draft", label: "Draft" },
+  { value: "scheduled", label: "Scheduled" },
+  { value: "live", label: "Live" },
+];
+
+export function BookForm({ mode = "create", bookId, defaultValues }: BookFormProps) {
   const [message, setMessage] = useState<string | null>(null);
 
   async function handleAction(formData: FormData) {
     const action = mode === "create" ? createBookAction : updateBookAction;
     if (bookId) {
-      formData.append("bookId", bookId);
+      formData.set("bookId", bookId);
     }
     const result = await action(formData);
     setMessage(result.message);
@@ -29,15 +50,15 @@ export function BookForm({ mode = "create", bookId }: BookFormProps) {
     <form action={handleAction} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="title">Title</Label>
-        <Input id="title" name="title" required />
+        <Input id="title" name="title" required defaultValue={defaultValues?.title ?? ""} />
       </div>
       <div className="space-y-2">
         <Label htmlFor="subtitle">Subtitle</Label>
-        <Input id="subtitle" name="subtitle" />
+        <Input id="subtitle" name="subtitle" defaultValue={defaultValues?.subtitle ?? ""} />
       </div>
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
-        <Textarea id="description" name="description" />
+        <Textarea id="description" name="description" defaultValue={defaultValues?.description ?? ""} />
       </div>
       <div className="space-y-2">
         <Label htmlFor="format">Format</Label>
@@ -45,17 +66,42 @@ export function BookForm({ mode = "create", bookId }: BookFormProps) {
           id="format"
           name="format"
           className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          defaultValue="ebook"
+          defaultValue={defaultValues?.format ?? "ebook"}
         >
-          <option value="ebook">eBook</option>
-          <option value="paperback">Paperback</option>
-          <option value="hardcover">Hardcover</option>
-          <option value="audiobook">Audiobook</option>
+          {formatOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="status">Status</Label>
+        <select
+          id="status"
+          name="status"
+          className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          defaultValue={defaultValues?.status ?? "draft"}
+        >
+          {statusOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
       </div>
       <div className="space-y-2">
         <Label htmlFor="launchDate">Launch date</Label>
-        <Input id="launchDate" name="launchDate" type="date" />
+        <Input
+          id="launchDate"
+          name="launchDate"
+          type="date"
+          defaultValue={defaultValues?.launch_date ?? ""}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="cover">Cover image</Label>
+        <Input id="cover" name="cover" type="file" accept="image/*" />
       </div>
       {message ? <p className="text-sm text-muted-foreground">{message}</p> : null}
       <FormSubmit pendingLabel={mode === "create" ? "Creating..." : "Saving..."}>

@@ -2,13 +2,15 @@ import { notFound } from "next/navigation";
 
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { BookForm } from "@/features/books/components/book-form";
+import { getBook } from "@/lib/books/service";
 
 type EditBookPageProps = {
   params: { bookId: string };
 };
 
-export default function EditBookPage({ params }: EditBookPageProps) {
-  if (!params.bookId) {
+export default async function EditBookPage({ params }: EditBookPageProps) {
+  const book = await getBook(params.bookId);
+  if (!book) {
     notFound();
   }
 
@@ -17,7 +19,7 @@ export default function EditBookPage({ params }: EditBookPageProps) {
       title="Edit book"
       description="Update metadata before syncing launch data."
     >
-      <BookForm mode="edit" bookId={params.bookId} />
+      <BookForm mode="edit" bookId={params.bookId} defaultValues={book} />
     </DashboardShell>
   );
 }

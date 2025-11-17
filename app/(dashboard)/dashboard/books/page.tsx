@@ -3,29 +3,27 @@ import Link from "next/link";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { deleteBookAction } from "@/lib/books/actions";
+import { listBooks } from "@/lib/books/service";
 
-const demoBooks = [
-  {
-    id: "demo-book",
-    title: "Your launch-ready manuscript",
-    status: "draft",
-    format: "ebook",
-  },
-];
+export default async function BooksPage() {
+  const books = await listBooks();
 
-export default function BooksPage() {
   return (
     <DashboardShell
       title="Books"
       description="Manage titles, formats, and launch readiness per SKU."
     >
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        <div className="text-sm text-muted-foreground">
+          {books.length} {books.length === 1 ? "book" : "books"}
+        </div>
         <Button asChild>
           <Link href="/dashboard/books/new">Add book</Link>
         </Button>
       </div>
       <div className="grid gap-4">
-        {demoBooks.map((book) => (
+        {books.map((book) => (
           <Card key={book.id}>
             <CardHeader>
               <CardTitle>{book.title}</CardTitle>
@@ -33,18 +31,31 @@ export default function BooksPage() {
                 Status: {book.status} • Format: {book.format}
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex gap-3">
+            <CardContent className="flex flex-wrap gap-3">
               <Button variant="outline" asChild>
                 <Link href={`/dashboard/books/${book.id}`}>View</Link>
               </Button>
               <Button variant="ghost" asChild>
                 <Link href={`/dashboard/books/${book.id}/edit`}>Edit</Link>
               </Button>
+              <form action={async () => {
+                "use server";
+                await deleteBookAction(book.id);
+              }}>
+                <Button variant="destructive">Delete</Button>
+              </form>
             </CardContent>
           </Card>
         ))}
+        {books.length === 0 ? (
+          <Card>
+            <CardHeader>
+              <CardTitle>No books yet</CardTitle>
+              <CardDescription>Add your first title to start tracking sales.</CardDescription>
+            </CardHeader>
+          </Card>
+        ) : null}
       </div>
     </DashboardShell>
   );
 }
-
