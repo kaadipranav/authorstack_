@@ -2,13 +2,24 @@ import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
 import { enqueueJob } from "@/lib/ingestion/queue";
 
+const VALID_PLATFORMS = ["amazon_kdp", "gumroad", "smashwords", "draft2digital"];
+
 export async function POST(request: Request) {
   try {
     const user = await requireAuth();
-    const body = await request.json();
+    
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid JSON in request body" },
+        { status: 400 }
+      );
+    }
 
     const { platform, payload } = body as {
-      platform: string;
+      platform?: string;
       payload?: Record<string, unknown>;
     };
 
@@ -19,7 +30,16 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!VALID_PLATFORMS.includes(platform)) {
+      return NextResponse.json(
+        { error: `Invalid platform. Must be one of: ${VALID_PLATFORMS.join(", ")}` },
+        { status: 400 }
+      );
+    }
+
     const jobId = await enqueueJob(user.id, platform, payload || {});
+
+    console.log(`[API] Manual ingestion job queued: ${jobId} for ${platform}`);
 
     return NextResponse.json(
       {
@@ -31,6 +51,15 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error("[API] Manual ingestion error:", errorMessage);
+    
+    if (errorMessage.includes("Unauthorized")) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     return NextResponse.json(
       {
         error: "Failed to queue ingestion job",
