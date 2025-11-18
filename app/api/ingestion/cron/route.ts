@@ -11,10 +11,12 @@ export async function POST(request: Request) {
     (vercelCronSecret && vercelCronSecret === process.env.CRON_SECRET);
 
   if (!isAuthorized) {
+    console.warn("[Cron] Unauthorized cron request");
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
+    console.log("[Cron] Starting ingestion queue processing");
     await logCronExecution("ingestion:process-queue", "started");
 
     const processed = await processQueuedJobs(10);
@@ -24,6 +26,8 @@ export async function POST(request: Request) {
       timestamp: new Date().toISOString(),
     });
 
+    console.log(`[Cron] ✓ Processed ${processed} ingestion jobs`);
+
     return NextResponse.json({
       status: "success",
       message: `Processed ${processed} ingestion jobs`,
@@ -31,6 +35,8 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error("[Cron] Processing error:", errorMessage);
+    
     await logCronExecution(
       "ingestion:process-queue",
       "failed",

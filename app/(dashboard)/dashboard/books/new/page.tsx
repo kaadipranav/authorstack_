@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { BookForm } from "@/features/books/components/book-form";
 

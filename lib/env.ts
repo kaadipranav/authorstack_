@@ -26,6 +26,7 @@ export const env = createEnv({
     UPSTASH_QSTASH_TOKEN: z.string().optional(),
     UPSTASH_QSTASH_CURRENT_SIGNING_KEY: z.string().optional(),
     SENTRY_DSN: z.string().url().optional(),
+    SENTRY_AUTH_TOKEN: z.string().optional(),
     POSTHOG_API_KEY: z.string().optional(),
     PROXIES_JSON: z.string().optional(),
   },
@@ -34,6 +35,8 @@ export const env = createEnv({
     NEXT_PUBLIC_VERCEL_ENV: z.string().default("development"),
     NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
     NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().optional(),
+    NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
+    NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional(),
     NEXT_PUBLIC_FEATURES: z
       .string()
       .default(defaultFeatureFlags)
@@ -56,12 +59,15 @@ export const env = createEnv({
     UPSTASH_QSTASH_TOKEN: process.env.UPSTASH_QSTASH_TOKEN,
     UPSTASH_QSTASH_CURRENT_SIGNING_KEY: process.env.UPSTASH_QSTASH_CURRENT_SIGNING_KEY,
     SENTRY_DSN: process.env.SENTRY_DSN,
+    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
     POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
     PROXIES_JSON: process.env.PROXIES_JSON,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
+    NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     NEXT_PUBLIC_FEATURES: process.env.NEXT_PUBLIC_FEATURES,
   },
   skipValidation: Boolean(process.env.SKIP_ENV_VALIDATION),

@@ -10,9 +10,17 @@ export async function GET(
     const user = await requireAuth();
     const { jobId } = await params;
 
+    if (!jobId || typeof jobId !== "string") {
+      return NextResponse.json(
+        { error: "Invalid job ID" },
+        { status: 400 }
+      );
+    }
+
     const job = await getJobStatus(jobId);
 
     if (!job) {
+      console.warn(`[API] Job not found: ${jobId}`);
       return NextResponse.json(
         { error: "Job not found" },
         { status: 404 }
@@ -20,11 +28,14 @@ export async function GET(
     }
 
     if (job.profile_id !== user.id) {
+      console.warn(`[API] Unauthorized access to job ${jobId} by user ${user.id}`);
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 403 }
       );
     }
+
+    console.log(`[API] Job status retrieved: ${jobId}`);
 
     return NextResponse.json({
       id: job.id,
@@ -36,6 +47,15 @@ export async function GET(
     });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error("[API] Job status error:", errorMessage);
+    
+    if (errorMessage.includes("Unauthorized")) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     return NextResponse.json(
       {
         error: "Failed to fetch job status",

@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { ProfileForm } from "@/components/forms/profile-form";
 import { Button } from "@/components/ui/button";
