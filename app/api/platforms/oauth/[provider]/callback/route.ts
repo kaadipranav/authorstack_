@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
 
-type Params = {
-  params: { provider: string };
-};
-
-export async function GET(request: Request, { params }: Params) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ provider: string }> }
+) {
+  const { provider } = await params;
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
 
   return NextResponse.json({
-    provider: params.provider,
+    provider,
     code,
     state,
     message:

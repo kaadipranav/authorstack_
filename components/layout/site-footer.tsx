@@ -10,8 +10,8 @@ export function SiteFooter() {
           © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
         </p>
         <div className="flex flex-wrap items-center gap-4">
-          <Link href={siteConfig.links.docs}>Docs</Link>
-          <Link href={siteConfig.links.status}>Status</Link>
+          <Link href={siteConfig.links.docs as any}>Docs</Link>
+          <Link href={siteConfig.links.status as any}>Status</Link>
           <a href={siteConfig.links.github} target="_blank" rel="noreferrer">
             GitHub
           </a>

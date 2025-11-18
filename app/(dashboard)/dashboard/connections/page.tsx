@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { requireAuth } from "@/lib/auth/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-const connectors = [
+const connectors: Array<{ title: string; description: string; href: string }> = [
   {
     title: "Amazon KDP",
     description: "Upload CSVs or connect OAuth to sync Kindle Direct Publishing data.",
@@ -47,7 +47,7 @@ export default async function ConnectionsPage() {
             </CardHeader>
             <CardContent>
               <Button asChild>
-                <Link href={connector.href}>Configure</Link>
+                <Link href={connector.href as any}>Configure</Link>
               </Button>
             </CardContent>
           </Card>

@@ -103,7 +103,7 @@ export default function Home() {
                   <h3 className="text-lg font-semibold">{vendor.name}</h3>
                 </div>
                 <Button asChild variant="ghost" size="sm">
-                  <Link href={vendor.url} target="_blank" rel="noreferrer">
+                  <Link href={vendor.url as any} target="_blank" rel="noreferrer">
                     Docs
                     <ArrowRight className="ml-1 size-4" />
                   </Link>

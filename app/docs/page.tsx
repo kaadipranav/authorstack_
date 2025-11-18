@@ -36,7 +36,7 @@ export default function DocsPage() {
             <h2 className="text-lg font-semibold">{doc.title}</h2>
             <p className="mt-2 text-sm text-muted-foreground">{doc.description}</p>
             <Button asChild variant="ghost" className="mt-4 px-0">
-              <Link href={doc.path}>
+              <Link href={doc.path as any}>
                 Open file
               </Link>
             </Button>

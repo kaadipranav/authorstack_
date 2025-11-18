@@ -12,6 +12,13 @@ export const supabaseServiceClient =
       })
     : null;
 
+export async function createSupabaseServiceClient() {
+  if (!supabaseServiceClient) {
+    throw new Error("Supabase service client not initialized. Check environment variables.");
+  }
+  return supabaseServiceClient;
+}
+
 export async function pingSupabase() {
   if (!supabaseServiceClient) {
     return { status: "skipped" as const, latencyMs: 0 };

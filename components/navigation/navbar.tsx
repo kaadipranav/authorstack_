@@ -49,7 +49,7 @@ export function Navbar() {
                       asChild
                       className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
                     >
-                      <Link href={item.href}>
+                      <Link href={item.href as any}>
                         {item.title}
                         {item.badge ? (
                           <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
@@ -72,14 +72,14 @@ export function Navbar() {
               asChild
               className="text-sm text-muted-foreground hover:text-foreground"
             >
-              <Link href={item.href} target={item.external ? "_blank" : undefined}>
+              <Link href={item.href as any} target={item.external ? "_blank" : undefined}>
                 {item.title}
               </Link>
             </Button>
           ))}
           <ThemeToggle />
           <Button asChild>
-            <Link href="/signup">Launch Studio</Link>
+            <Link href={("/signup" as any)}>Launch Studio</Link>
           </Button>
         </div>
         <div className="flex items-center gap-2 md:hidden">
@@ -108,7 +108,7 @@ function MobileNav() {
           {navItems.map((item) => (
             <Link
               key={item.title}
-              href={item.href}
+              href={item.href as any}
               className="text-base font-medium text-foreground"
             >
               {item.title}
@@ -117,7 +117,7 @@ function MobileNav() {
         </nav>
         <Separator className="my-6" />
         <Button asChild className="w-full">
-          <Link href="/signup">Launch Studio</Link>
+          <Link href={("/signup" as any)}>Launch Studio</Link>
         </Button>
       </SheetContent>
     </Sheet>

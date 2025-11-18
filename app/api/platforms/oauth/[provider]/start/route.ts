@@ -2,14 +2,12 @@ import { NextResponse } from "next/server";
 
 import { getProviderConfig } from "@/lib/platforms/oauth";
 
-type Params = {
-  params: {
-    provider: string;
-  };
-};
-
-export async function GET(_request: Request, { params }: Params) {
-  const config = getProviderConfig(params.provider);
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ provider: string }> }
+) {
+  const { provider } = await params;
+  const config = getProviderConfig(provider);
   if (!config) {
     return NextResponse.json({ error: "Unsupported provider" }, { status: 404 });
   }
