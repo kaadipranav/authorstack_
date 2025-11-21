@@ -23,6 +23,7 @@ export function PublicShell({ children, mainClassName, hideAuthLinks = false }: 
                 src="/logos/Light_logo.png"
                 alt="AuthorStack logo"
                 fill
+                sizes="32px"
                 priority
                 className="object-contain"
               />

@@ -5,18 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Route } from "next";
-import { 
-  BookOpen, 
-  Calendar, 
-  ChartBar, 
-  Cog, 
-  FileText, 
-  Home, 
-  LogOut, 
-  Menu, 
-  Search, 
-  Settings, 
-  TrendingUp, 
+import {
+  BookOpen,
+  Calendar,
+  ChartBar,
+  Cog,
+  FileText,
+  Home,
+  LogOut,
+  Menu,
+  Search,
+  Settings,
+  TrendingUp,
   Users,
   Bell,
   Plus
@@ -57,7 +57,7 @@ function InsightsRail() {
           </div>
         </div>
       </div>
-      
+
       <div className="space-y-4">
         <h3 className="text-heading-3 font-semibold">Leaderboard</h3>
         <div className="space-y-3">
@@ -80,7 +80,7 @@ function InsightsRail() {
 // Sidebar component
 function Sidebar({ isCollapsed }: { isCollapsed: boolean }) {
   const pathname = usePathname();
-  
+
   return (
     <div className={`h-full border-r border-stroke bg-surface ${isCollapsed ? 'w-16' : 'w-72'} transition-all duration-300`}>
       <div className="flex h-full flex-col">
@@ -92,6 +92,7 @@ function Sidebar({ isCollapsed }: { isCollapsed: boolean }) {
                   src="/logos/Light_logo.png"
                   alt="AuthorStack logo"
                   fill
+                  sizes="32px"
                   priority
                   className="object-contain"
                 />
@@ -104,6 +105,7 @@ function Sidebar({ isCollapsed }: { isCollapsed: boolean }) {
                   src="/logos/Light_logo.png"
                   alt="AuthorStack logo"
                   fill
+                  sizes="40px"
                   priority
                   className="object-contain"
                 />
@@ -112,27 +114,26 @@ function Sidebar({ isCollapsed }: { isCollapsed: boolean }) {
             </div>
           )}
         </div>
-        
+
         <nav className="flex-1 overflow-y-auto py-5">
           <ul className="space-y-1.5 px-3">
             {navigationItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
-              
+
               return (
                 <li key={item.name}>
                   <Link
                     href={item.href as Route}
-                    className={`relative flex items-center gap-3 rounded-md px-3.5 py-2.5 text-small transition-all duration-200 ease-[cubic-bezier(.2,.9,.2,1)] ${
-                      isActive 
-                        ? 'bg-burgundy/10 text-ink font-medium shadow-soft' 
+                    className={`relative flex items-center gap-3 rounded-md px-3.5 py-2.5 text-small transition-all duration-200 ease-[cubic-bezier(.2,.9,.2,1)] ${isActive
+                        ? 'bg-burgundy/10 text-ink font-medium shadow-soft'
                         : 'text-ink hover:bg-glass hover:shadow-soft'
-                    }`}
+                      }`}
                   >
                     {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1.5 rounded-r bg-burgundy" />}
                     <Icon className="h-5 w-5" />
                     {!isCollapsed && <span>{item.name}</span>}
-                    
+
                     {isCollapsed && (
                       <div className="absolute left-16 bg-surface border border-stroke px-2 py-1 rounded-lg shadow-lg text-small whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
                         {item.name}
@@ -144,12 +145,12 @@ function Sidebar({ isCollapsed }: { isCollapsed: boolean }) {
             })}
           </ul>
         </nav>
-        
+
         <div className="p-5 border-t border-stroke">
           <form action={signOutAction}>
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               className="w-full justify-start gap-3 px-3.5 py-2.5 text-small"
               type="submit"
             >
@@ -179,13 +180,14 @@ function Topbar() {
               <Sidebar isCollapsed={false} />
             </SheetContent>
           </Sheet>
-          
+
           <div className="hidden md:flex items-center gap-3">
             <div className="relative h-8 w-8 transition-transform duration-300 hover:scale-105">
               <Image
                 src="/logos/Light_logo.png"
                 alt="AuthorStack logo"
                 fill
+                sizes="32px"
                 priority
                 className="object-contain"
               />
@@ -193,7 +195,7 @@ function Topbar() {
             <span className="text-heading-3 font-bold">AuthorStack</span>
           </div>
         </div>
-        
+
         <div className="flex flex-1 items-center gap-4">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-charcoal" />
@@ -203,18 +205,18 @@ function Topbar() {
               className="w-full rounded-lg bg-glass border border-stroke py-2.5 pl-10 pr-4 text-small focus:outline-none focus:ring-2 focus:ring-burgundy/40 focus:border-burgundy"
             />
           </div>
-          
+
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="relative">
               <Bell className="h-5 w-5" />
               <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-burgundy"></span>
             </Button>
-            
+
             <Button size="sm" className="gap-2 bg-burgundy hover:bg-burgundy/90 text-surface">
               <Plus className="h-4 w-4" />
               <span className="hidden sm:inline">New Book</span>
             </Button>
-            
+
             <Button variant="outline" size="icon" className="border-stroke">
               <div className="bg-burgundy text-surface w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">U</div>
             </Button>
@@ -228,23 +230,22 @@ function Topbar() {
 // Mobile navigation
 function MobileNav() {
   const pathname = usePathname();
-  
+
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-stroke bg-surface md:hidden">
       <nav className="grid grid-cols-4 gap-1 p-1">
         {navigationItems.slice(0, 4).map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
-          
+
           return (
             <Link
               key={item.name}
               href={item.href as Route}
-              className={`flex flex-col items-center gap-1 rounded-lg px-2 py-3 text-mini transition-all duration-200 ease-[cubic-bezier(.2,.9,.2,1)] ${
-                isActive 
-                  ? 'bg-burgundy/10 text-ink' 
+              className={`flex flex-col items-center gap-1 rounded-lg px-2 py-3 text-mini transition-all duration-200 ease-[cubic-bezier(.2,.9,.2,1)] ${isActive
+                  ? 'bg-burgundy/10 text-ink'
                   : 'text-ink hover:bg-glass'
-              }`}
+                }`}
             >
               <Icon className="h-5 w-5" />
               <span>{item.name}</span>
@@ -259,20 +260,20 @@ function MobileNav() {
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  
+
   useEffect(() => {
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkIsMobile();
     window.addEventListener('resize', checkIsMobile);
-    
+
     return () => {
       window.removeEventListener('resize', checkIsMobile);
     };
   }, []);
-  
+
   // Handle responsive behavior
   useEffect(() => {
     const handleResize = () => {
@@ -282,40 +283,40 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       } else {
         setIsCollapsed(false);
       }
-      
+
       // Update mobile state
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     window.addEventListener('resize', handleResize);
     handleResize(); // Initial check
-    
+
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
+
   return (
     <div className="flex min-h-screen flex-col bg-paper">
       <Topbar />
-      
+
       <div className="flex flex-1">
         {/* Sidebar - hidden on mobile, collapsible on desktop */}
         <div className="hidden md:block">
           <Sidebar isCollapsed={isCollapsed} />
         </div>
-        
+
         {/* Main content area - full width on mobile, adjusted on desktop */}
         <main className="flex-1 pb-20 md:pb-0">
           <div className="container py-8 lg:py-10">
             {children}
           </div>
         </main>
-        
+
         {/* Insights rail - only visible on xl screens */}
         <div className="hidden xl:block">
           <InsightsRail />
         </div>
       </div>
-      
+
       {/* Mobile navigation - only visible on mobile */}
       {isMobile && <MobileNav />}
     </div>

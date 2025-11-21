@@ -16,6 +16,12 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+-- Drop existing policies if they exist (idempotent)
+drop policy if exists "Public profiles are viewable by everyone." on profiles;
+drop policy if exists "Users can insert their own profile." on profiles;
+drop policy if exists "Users can update own profile." on profiles;
+
+-- Recreate policies
 create policy "Public profiles are viewable by everyone."
   on profiles for select
   using ( true );
@@ -45,6 +51,13 @@ create table if not exists public.books (
 
 alter table public.books enable row level security;
 
+-- Drop existing policies if they exist
+drop policy if exists "Users can view their own books." on books;
+drop policy if exists "Users can insert their own books." on books;
+drop policy if exists "Users can update their own books." on books;
+drop policy if exists "Users can delete their own books." on books;
+
+-- Recreate policies
 create policy "Users can view their own books."
   on books for select
   using ( auth.uid() = profile_id );
@@ -65,7 +78,7 @@ create policy "Users can delete their own books."
 create table if not exists public.sales_events (
   id uuid default uuid_generate_v4() primary key,
   profile_id uuid references public.profiles(id) on delete cascade not null,
-  book_id uuid references public.books(id) on delete set null, -- Optional link to book
+  book_id uuid references public.books(id) on delete set null,
   platform text check (platform in ('amazon_kdp', 'gumroad', 'smashwords', 'draft2digital')) not null,
   event_type text check (event_type in ('sale', 'refund')) not null,
   quantity integer not null,
@@ -78,6 +91,10 @@ create table if not exists public.sales_events (
 
 alter table public.sales_events enable row level security;
 
+-- Drop existing policy if it exists
+drop policy if exists "Users can view their own sales." on sales_events;
+
+-- Recreate policy
 create policy "Users can view their own sales."
   on sales_events for select
   using ( auth.uid() = profile_id );
@@ -92,6 +109,10 @@ create table if not exists public.launch_checklists (
 
 alter table public.launch_checklists enable row level security;
 
+-- Drop existing policy if it exists
+drop policy if exists "Users can view their own checklists." on launch_checklists;
+
+-- Recreate policy
 create policy "Users can view their own checklists."
   on launch_checklists for select
   using ( auth.uid() = profile_id );
@@ -109,6 +130,10 @@ create table if not exists public.launch_tasks (
 
 alter table public.launch_tasks enable row level security;
 
+-- Drop existing policy if it exists
+drop policy if exists "Users can view their own tasks." on launch_tasks;
+
+-- Recreate policy
 create policy "Users can view their own tasks."
   on launch_tasks for select
   using (
@@ -124,6 +149,13 @@ insert into storage.buckets (id, name, public)
 values ('book-covers', 'book-covers', true)
 on conflict (id) do nothing;
 
+-- Drop existing storage policies if they exist
+drop policy if exists "Book covers are publicly accessible." on storage.objects;
+drop policy if exists "Users can upload book covers." on storage.objects;
+drop policy if exists "Users can update their own book covers." on storage.objects;
+drop policy if exists "Users can delete their own book covers." on storage.objects;
+
+-- Recreate storage policies
 create policy "Book covers are publicly accessible."
   on storage.objects for select
   using ( bucket_id = 'book-covers' );

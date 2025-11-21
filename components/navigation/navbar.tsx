@@ -41,6 +41,7 @@ export function Navbar() {
                 src="/logos/Light_logo.png"
                 alt="AuthorStack logo"
                 fill
+                sizes="40px"
                 priority
                 className="object-contain"
               />
