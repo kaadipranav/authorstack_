@@ -3,28 +3,6 @@
   "devCommand": "npm run dev",
   "installCommand": "npm ci",
   "framework": "nextjs",
-  "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": "@next_public_supabase_url",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@next_public_supabase_anon_key",
-    "SUPABASE_SERVICE_ROLE_KEY": "@supabase_service_role_key",
-    "SUPABASE_DB_URL": "@supabase_db_url",
-    "NEXTAUTH_URL": "@nextauth_url",
-    "NEXT_PUBLIC_VERCEL_ENV": "@next_public_vercel_env",
-    "WHOP_API_KEY": "@whop_api_key",
-    "WHOP_WEBHOOK_SECRET": "@whop_webhook_secret",
-    "RESEND_API_KEY": "@resend_api_key",
-    "FROM_EMAIL": "@from_email",
-    "UPSTASH_REDIS_REST_URL": "@upstash_redis_rest_url",
-    "UPSTASH_REDIS_REST_TOKEN": "@upstash_redis_rest_token",
-    "UPSTASH_QSTASH_URL": "@upstash_qstash_url",
-    "UPSTASH_QSTASH_TOKEN": "@upstash_qstash_token",
-    "UPSTASH_QSTASH_CURRENT_SIGNING_KEY": "@upstash_qstash_current_signing_key",
-    "SENTRY_DSN": "@sentry_dsn",
-    "POSTHOG_API_KEY": "@posthog_api_key",
-    "JWT_SECRET": "@jwt_secret",
-    "CRON_SECRET": "@cron_secret",
-    "NEXT_PUBLIC_FEATURES": "@next_public_features"
-  },
   "crons": [
     {
       "path": "/api/ingestion/cron",
