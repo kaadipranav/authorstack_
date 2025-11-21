@@ -193,7 +193,10 @@
   }
 
   /* Focus states */
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-burgundy/20 focus:ring-offset-2 focus:ring-offset-paper;
+  .bg-auth-bg {
+    background-image: url('/auth-bg.png');
+    background-size: cover;
+    background-repeat: repeat;
   }
+
 }

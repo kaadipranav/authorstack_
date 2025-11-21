@@ -1,30 +1,19 @@
-import Link from "next/link";
-import type { Metadata } from "next";
-
 import { SignUpForm } from "@/components/forms/sign-up-form";
+import GoogleSignInButton from "@/components/auth/google-signin-button";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Create AuthorStack Account",
-  description: "Join AuthorStack to manage your book launches, sales tracking, and publishing operations. Start your free trial today.",
+  description: "Join AuthorStack to manage your book launches",
 };
 
 export default function SignUpPage() {
   return (
-    <div className="w-full space-y-8">
-      <div className="text-center space-y-3">
-        <h1 className="text-3xl font-bold text-ink">Create your account</h1>
-        <p className="text-sm text-charcoal">
-          Join AuthorStack to manage your book launches and sales.
-        </p>
-      </div>
-
-      <SignUpForm />
-
-      <div className="text-center text-sm text-charcoal">
-        Already have an account?{' '}
-        <Link href="/auth/sign-in" className="text-burgundy font-medium hover:underline">
-          Sign in
-        </Link>
+    <div className="min-h-screen bg-auth-bg flex items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-6 rounded-2xl border border-burgundy/10 bg-surface p-8 shadow-xl">
+        <SignUpForm />
+        <div className="flex items-center justify-center">
+          <GoogleSignInButton />
+        </div>
       </div>
     </div>
   );
