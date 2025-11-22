@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { services } from "@/lib/services";
 import { requireAuth } from "@/lib/auth/session";
+import { RevenueChart } from "@/components/dashboard/revenue-chart";
 
 export const metadata: Metadata = {
   title: "Dashboard - AuthorStack",
@@ -18,8 +19,10 @@ export default async function DashboardHomePage() {
   const user = await requireAuth();
 
   // Fetch data using new services
-  const [salesStats, myBooks, upcomingTasks, checklists] = await Promise.all([
+  const [salesStats, dailySales, salesByPlatform, myBooks, upcomingTasks, checklists] = await Promise.all([
     services.sales.getSalesStats(user.id),
+    services.sales.getDailySales(user.id, 30),
+    services.sales.getSalesByPlatform(user.id),
     services.book.getMyBooks(user.id),
     services.launch.getUpcomingTasks(user.id),
     services.launch.getMyChecklists(user.id),
@@ -66,11 +69,16 @@ export default async function DashboardHomePage() {
     id: book.id,
     title: book.title,
     author: "Me",
-    revenue: 0,
+    revenue: 0, // TODO: Calculate per-book revenue if needed
     units: 0,
     platforms: [book.format],
     cover: book.coverPath || "/placeholder-cover.jpg",
   }));
+
+  // Sort platforms by revenue
+  const topPlatforms = salesByPlatform
+    .sort((a, b) => b.amount - a.amount)
+    .slice(0, 3);
 
   return (
     <div className="space-y-10">
@@ -113,47 +121,29 @@ export default async function DashboardHomePage() {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Main content area */}
         <div className="lg:col-span-2 space-y-8">
-          {/* Revenue Card - Enhanced */}
-          <Card className="border border-stroke bg-surface shadow-soft rounded-lg overflow-hidden">
-            <CardHeader className="pb-6 pt-6 px-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-heading-2 text-ink">Revenue Overview</CardTitle>
-                  <CardDescription className="text-small text-charcoal mt-1">
-                    Last 30 days performance
-                  </CardDescription>
+          {/* Revenue Card - Enhanced with Chart */}
+          <RevenueChart data={dailySales} />
+
+          {/* Platform Breakdown (below chart) */}
+          <div className="grid grid-cols-3 gap-4">
+            {topPlatforms.length > 0 ? (
+              topPlatforms.map((platform) => (
+                <div key={platform.platform} className="group p-4 rounded-lg bg-surface border border-stroke transition-all duration-200 hover:shadow-soft hover:border-stroke cursor-pointer">
+                  <p className="text-mini text-charcoal uppercase tracking-wide font-medium mb-1">
+                    {platform.platform.replace('_', ' ')}
+                  </p>
+                  <p className="text-heading-3 text-ink mb-0.5">
+                    ${platform.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                  </p>
+                  <p className="text-mini text-success">{platform.units} units</p>
                 </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="text-xs px-3 h-8">7d</Button>
-                  <Button size="sm" className="text-xs px-3 h-8 bg-burgundy hover:bg-burgundy/90">30d</Button>
-                  <Button variant="outline" size="sm" className="text-xs px-3 h-8">90d</Button>
-                </div>
+              ))
+            ) : (
+              <div className="col-span-3 p-4 rounded-lg bg-surface border border-stroke text-center">
+                <p className="text-small text-charcoal">No sales data yet. Connect a platform to see breakdown.</p>
               </div>
-            </CardHeader>
-            <CardContent className="px-6 pb-6">
-              {/* Placeholder for revenue chart */}
-              <div className="h-64 rounded-lg bg-glass/50 border border-stroke/50 flex items-center justify-center backdrop-blur-sm">
-                <p className="text-charcoal text-sm font-medium">Revenue chart visualization</p>
-              </div>
-              <div className="mt-6 grid grid-cols-3 gap-4">
-                <div className="group p-4 rounded-lg bg-glass/50 border border-stroke/50 transition-all duration-200 hover:shadow-soft hover:border-stroke cursor-pointer">
-                  <p className="text-mini text-charcoal uppercase tracking-wide font-medium mb-1">KDP</p>
-                  <p className="text-heading-3 text-ink mb-0.5">$0</p>
-                  <p className="text-mini text-success">--</p>
-                </div>
-                <div className="group p-4 rounded-lg bg-glass/50 border border-stroke/50 transition-all duration-200 hover:shadow-soft hover:border-stroke cursor-pointer">
-                  <p className="text-mini text-charcoal uppercase tracking-wide font-medium mb-1">Gumroad</p>
-                  <p className="text-heading-3 text-ink mb-0.5">$0</p>
-                  <p className="text-mini text-success">--</p>
-                </div>
-                <div className="group p-4 rounded-lg bg-glass/50 border border-stroke/50 transition-all duration-200 hover:shadow-soft hover:border-stroke cursor-pointer">
-                  <p className="text-mini text-charcoal uppercase tracking-wide font-medium mb-1">Whop</p>
-                  <p className="text-heading-3 text-ink mb-0.5">$0</p>
-                  <p className="text-mini text-amber">--</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+            )}
+          </div>
 
           {/* Books Table - Enhanced */}
           <Card className="border border-stroke bg-surface shadow-soft rounded-lg overflow-hidden">

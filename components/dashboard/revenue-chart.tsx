@@ -48,7 +48,7 @@ export function RevenueChart({ data }: RevenueChartProps) {
                                 tick={{ fontSize: 12, fill: "#64748B" }}
                                 axisLine={false}
                                 tickLine={false}
-                                tickFormatter={(value) => `$${value}`}
+                                tickFormatter={(value: number) => `$${value}`}
                             />
                             <Tooltip
                                 contentStyle={{
