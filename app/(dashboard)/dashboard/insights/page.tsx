@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AIRecommendationsCard } from "@/components/insights/ai-recommendations-card";
 import { ObservationInput } from "@/components/insights/observation-input";
+import { RevenuePredictionChart } from "@/components/insights/revenue-prediction-chart";
+import { MarketingROIChart } from "@/components/insights/marketing-roi-chart";
 import { Loader2, TrendingUp, DollarSign, Users, BarChart3 } from "lucide-react";
 
 interface InsightsDashboard {
@@ -152,17 +154,7 @@ export default function InsightsPage() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {dashboard?.revenuePredictions.length ? (
-                            <div className="h-48 flex items-center justify-center border border-stroke rounded bg-glass">
-                                <p className="text-small text-charcoal">
-                                    Chart visualization (integrate Recharts here)
-                                </p>
-                            </div>
-                        ) : (
-                            <p className="text-body text-charcoal text-center py-8">
-                                Not enough data for predictions yet
-                            </p>
-                        )}
+                        <RevenuePredictionChart predictions={dashboard?.revenuePredictions || []} />
                     </CardContent>
                 </Card>
 
@@ -175,28 +167,7 @@ export default function InsightsPage() {
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {dashboard?.marketingMetrics.length ? (
-                            <div className="space-y-3">
-                                {dashboard.marketingMetrics.map((metric, index) => (
-                                    <div key={index} className="flex items-center justify-between p-3 rounded border border-stroke bg-glass">
-                                        <div>
-                                            <p className="text-body font-semibold text-ink">{metric.channel}</p>
-                                            <p className="text-mini text-charcoal">
-                                                ${metric.spend} spent • {metric.conversions} conversions
-                                            </p>
-                                        </div>
-                                        <div className="text-right">
-                                            <p className="text-body font-bold text-forest">{metric.roi.toFixed(1)}x</p>
-                                            <p className="text-mini text-charcoal">${metric.revenue}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-body text-charcoal text-center py-8">
-                                No marketing data available
-                            </p>
-                        )}
+                        <MarketingROIChart metrics={dashboard?.marketingMetrics || []} />
                     </CardContent>
                 </Card>
 

@@ -5,11 +5,12 @@ import { successResponse, errorResponse, notFoundResponse } from '@/lib/api/resp
 
 export async function GET(
     req: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const user = await requireAuth();
-        const competitor = await services.competitor.getCompetitorDetails(params.id);
+        const competitor = await services.competitor.getCompetitorDetails(id);
 
         if (!competitor) {
             return notFoundResponse('Competitor');
@@ -22,52 +23,54 @@ export async function GET(
 
         return successResponse(competitor);
     } catch (error: any) {
-        console.error(`GET /api/competitors/${params.id} error:`, error);
+        console.error(`GET /api/competitors/[id] error:`, error);
         return errorResponse(error.message || 'Failed to fetch competitor', undefined, 500);
     }
 }
 
 export async function PATCH(
     req: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const user = await requireAuth();
         const body = await req.json();
 
         // Verify ownership first
-        const existing = await services.competitor.getCompetitorDetails(params.id);
+        const existing = await services.competitor.getCompetitorDetails(id);
         if (!existing || existing.profileId !== user.id) {
             return errorResponse('Unauthorized', undefined, 403);
         }
 
-        const updated = await services.competitor.updateCompetitor(params.id, body);
+        const updated = await services.competitor.updateCompetitor(id, body);
 
         return successResponse(updated);
     } catch (error: any) {
-        console.error(`PATCH /api/competitors/${params.id} error:`, error);
+        console.error(`PATCH /api/competitors/[id] error:`, error);
         return errorResponse(error.message || 'Failed to update competitor', undefined, 500);
     }
 }
 
 export async function DELETE(
     req: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const user = await requireAuth();
 
         // Verify ownership first
-        const existing = await services.competitor.getCompetitorDetails(params.id);
+        const existing = await services.competitor.getCompetitorDetails(id);
         if (!existing || existing.profileId !== user.id) {
             return errorResponse('Unauthorized', undefined, 403);
         }
 
-        await services.competitor.deleteCompetitor(params.id);
+        await services.competitor.deleteCompetitor(id);
 
         return successResponse({ message: 'Competitor deleted successfully' });
     } catch (error: any) {
-        console.error(`DELETE /api/competitors/${params.id} error:`, error);
+        console.error(`DELETE /api/competitors/[id] error:`, error);
         return errorResponse(error.message || 'Failed to delete competitor', undefined, 500);
     }
 }
