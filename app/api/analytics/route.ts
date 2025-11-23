@@ -77,9 +77,9 @@ export async function GET(req: NextRequest) {
     }
 
     // Calculate summary stats
-    const totalRevenue = data.reduce((sum, row) => sum + Number(row.revenue), 0);
-    const totalUnits = data.reduce((sum, row) => sum + Number(row.units_sold), 0);
-    const avgRevenuePerDay = data.length > 0 ? totalRevenue / data.length : 0;
+    const totalRevenue = (data || []).reduce((sum: number, row: any) => sum + Number(row.revenue), 0);
+    const totalUnits = (data || []).reduce((sum: number, row: any) => sum + Number(row.units_sold), 0);
+    const avgRevenuePerDay = (data || []).length > 0 ? totalRevenue / (data || []).length : 0;
 
     return NextResponse.json({
       data,
@@ -87,7 +87,7 @@ export async function GET(req: NextRequest) {
         totalRevenue,
         totalUnits,
         avgRevenuePerDay,
-        dataPoints: data.length,
+        dataPoints: (data || []).length,
       },
     });
   } catch (error) {

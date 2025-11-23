@@ -117,10 +117,10 @@ export function PricingSuggestions({ recommendations, currentPrice, bookTitle }:
                   {rec.metadata && Object.keys(rec.metadata).length > 0 && (
                     <div className="mt-3 p-2 bg-white/50 rounded text-xs text-charcoal">
                       <p className="font-medium mb-1">Analysis Details:</p>
-                      {rec.metadata.previousPrice && typeof rec.metadata.previousPrice === "number" && (
+                      {typeof rec.metadata.previousPrice === "number" && (
                         <p>Previous: ${rec.metadata.previousPrice.toFixed(2)}</p>
                       )}
-                      {rec.metadata.categoryAverage && typeof rec.metadata.categoryAverage === "number" && (
+                      {typeof rec.metadata.categoryAverage === "number" && (
                         <p>Category Avg: ${rec.metadata.categoryAverage.toFixed(2)}</p>
                       )}
                     </div>

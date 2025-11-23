@@ -87,7 +87,7 @@ export class AnalyticsService {
 
     if (error) throw new Error(error.message);
 
-    const analytics: BookAnalytics[] = (data || []).map((row) => ({
+    const analytics: BookAnalytics[] = (data || []).map((row: any) => ({
       bookId: row.book_id,
       date: row.date,
       revenue: Number(row.revenue),
