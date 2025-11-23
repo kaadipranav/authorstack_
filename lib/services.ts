@@ -8,6 +8,10 @@ import { MockCommunityRepository } from "./modules/community/infrastructure/mock
 import { CommunityService } from "./modules/community/application/community-service";
 import { SupabaseLaunchRepository } from "./modules/launch/infrastructure/supabase-repository";
 import { LaunchService } from "./modules/launch/application/launch-service";
+import { SupabaseCompetitorRepository } from "./modules/competitor/infrastructure/supabase-repository";
+import { CompetitorService } from "./modules/competitor/application/competitor-service";
+import { SupabaseInsightsRepository } from "./modules/insights/infrastructure/supabase-repository";
+import { InsightsService } from "./modules/insights/application/insights-service";
 
 // Singleton instances (lazy initialization could be better but this is simple for now)
 const userRepository = new SupabaseUserRepository();
@@ -27,6 +31,12 @@ const communityService = new CommunityService(communityRepository);
 const launchRepository = new SupabaseLaunchRepository();
 const launchService = new LaunchService(launchRepository);
 
+const competitorRepository = new SupabaseCompetitorRepository();
+const competitorService = new CompetitorService(competitorRepository);
+
+const insightsRepository = new SupabaseInsightsRepository();
+const insightsService = new InsightsService(insightsRepository);
+
 export const services = {
     user: userService,
     book: bookService,
@@ -34,4 +44,6 @@ export const services = {
     agent: agentService,
     community: communityService,
     launch: launchService,
+    competitor: competitorService,
+    insights: insightsService,
 };
