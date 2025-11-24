@@ -1,14 +1,36 @@
 # AuthorStack
 
-Production-grade SaaS starter for indie authors. Includes Supabase auth, Whop billing hooks, Upstash Redis, Resend email integration, shadcn/ui, and an opinionated folder structure for future features.
+AI-powered publishing dashboard for indie authors. Track sales across 9+ platforms, get ML predictions, chat with your AI assistant, and launch smarter with automated insights.
 
-## Stack
-- Next.js 14 (App Router, React 19, TypeScript)
+## Features
+
+**Phase 1-2: Core Platform** ✅
+- Multi-platform sales dashboard (Amazon KDP, Gumroad, Payhip, Lulu, etc.)
+- Real-time analytics & revenue tracking
+- Launch checklist management
+- Book catalog with cover uploads
+- Competitor tracking
+
+**Phase 3: AI Layer** ✅
+- AI chat assistant (context-aware publishing consultant)
+- Revenue forecasting & churn detection (ML models)
+- Smart recommendations (pricing, marketing, strategy)
+- Automated insights & performance alerts
+- Powered by OpenRouter (GPT-4 & Claude access)
+
+**Phase 4: Viral Growth** 📋 (Coming Soon)
+- Public leaderboard (top 100 books)
+- Shareable ranking badges
+- Author profile pages
+
+## Tech Stack
+- Next.js 16 (App Router, React 19, TypeScript)
 - Tailwind CSS v4 + shadcn/ui components
 - Supabase (auth, Postgres, storage)
-- Upstash Redis + QStash
-- Whop billing
-- Resend email
+- Upstash Redis + QStash (caching & job queue)
+- OpenRouter (AI/ML via GPT-4 & Claude)
+- Whop (subscription billing)
+- Resend (transactional email)
 
 ## Project layout
 ```
