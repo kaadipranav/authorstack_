@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth/session";
-import { createClient } from "@/lib/supabase/server";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function POST() {
     try {
         const session = await requireAuth();
-        const supabase = await createClient();
+        const supabase = await createSupabaseServerClient();
 
         // Update author profile with guidelines acceptance timestamp
         const { error } = await supabase

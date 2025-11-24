@@ -1,10 +1,10 @@
 import { requireAuth } from "@/lib/auth/session";
-import { createClient } from "@/lib/supabase/server";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { CommunityPageClient } from "./CommunityPageClient";
 
 export default async function CommunityPage() {
   const session = await requireAuth();
-  const supabase = await createClient();
+  const supabase = await createSupabaseServerClient();
 
   // Check if user has accepted guidelines
   const { data: profile } = await supabase

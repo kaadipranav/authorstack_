@@ -137,7 +137,7 @@ export function CommunityGuidelinesModal({
                             <Checkbox
                                 id="terms-agreement"
                                 checked={agreedToTerms}
-                                onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
+                                onCheckedChange={(checked: boolean) => setAgreedToTerms(checked)}
                                 className="h-5 w-5 mt-0.5"
                             />
                             <label
