@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import { ThemeToggle } from "@/components/navigation/theme-toggle";
+import { DimModeToggle } from "@/components/ui/dim-mode-toggle";
+import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/cn";
 
@@ -19,19 +19,20 @@ export function PublicShell({ children, mainClassName, hideAuthLinks = false }: 
         <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-3">
             <div className="relative h-8 w-8 transition-transform duration-300 hover:scale-105">
-              <Image
-                src="/logos/Light_logo.png"
-                alt="AuthorStack logo"
-                fill
-                sizes="32px"
-                priority
-                className="object-contain"
-              />
+              <Logo width={32} height={32} priority className="object-contain" />
             </div>
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-charcoal">AuthorStack</span>
           </Link>
+          <nav className="flex items-center gap-6">
+            <Link
+              href="/community"
+              className="text-sm font-medium text-charcoal hover:text-burgundy transition-colors"
+            >
+              Community
+            </Link>
+          </nav>
           <div className="flex items-center gap-3">
-            <ThemeToggle />
+            <DimModeToggle />
             {hideAuthLinks ? null : (
               <>
                 <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">

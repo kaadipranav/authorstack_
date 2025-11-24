@@ -11,7 +11,7 @@ import Image from "next/image";
 
 interface PostCardProps {
   post: PostWithAuthor;
-  currentUserId: string;
+  currentUserId?: string; // Optional for public viewing
   onLikeToggle?: () => void;
   onDelete?: () => void;
   onCommentClick?: () => void;
@@ -29,7 +29,8 @@ export function PostCard({
   const [isLiking, setIsLiking] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
-  const isOwnPost = post.author_id === currentUserId;
+  const isAuthenticated = !!currentUserId;
+  const isOwnPost = currentUserId && post.author_id === currentUserId;
 
   const handleLikeToggle = async () => {
     if (isLiking) return;
@@ -176,10 +177,10 @@ export function PostCard({
               variant="ghost"
               size="sm"
               onClick={handleLikeToggle}
-              disabled={isLiking}
-              className={`h-8 gap-2 ${
-                isLiked ? "text-burgundy" : "text-charcoal hover:text-burgundy"
-              }`}
+              disabled={isLiking || !isAuthenticated}
+              className={`h-8 gap-2 ${isLiked ? "text-burgundy" : "text-charcoal hover:text-burgundy"
+                }`}
+              title={!isAuthenticated ? "Sign in to like" : undefined}
             >
               <Heart className={`h-4 w-4 ${isLiked ? "fill-current" : ""}`} />
               <span className="font-medium">{likeCount}</span>
@@ -189,7 +190,9 @@ export function PostCard({
               variant="ghost"
               size="sm"
               onClick={onCommentClick}
+              disabled={!isAuthenticated}
               className="h-8 gap-2 text-charcoal hover:text-burgundy"
+              title={!isAuthenticated ? "Sign in to comment" : undefined}
             >
               <MessageCircle className="h-4 w-4" />
               <span className="font-medium">{post.comment_count}</span>

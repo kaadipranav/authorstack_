@@ -4,78 +4,114 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* 
+  Define CSS variables first so they can be used in @theme 
+  and overridden by .dim class
+*/
+:root {
+  /* Light Mode Colors */
+  --paper: #FAFAF9;
+  --ink: #1A1A1A;
+  --charcoal: #6B7280;
+  --burgundy: #991B1B;
+  --tannin: #6B3A2E;
+  --forest: #1F6F4F;
+  --amber: #C79B17;
+  --danger: #B33A3A;
+  --surface: #FFFFFF;
+  --surface-elevated: #FEFEFE;
+  --glass: rgba(17, 17, 15, 0.02);
+  --stroke: rgba(17, 17, 15, 0.08);
+  --stroke-subtle: rgba(17, 17, 15, 0.04);
+
+  /* Base Semantic Colors */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary: var(--burgundy);
+  --primary-foreground: var(--surface);
+  --secondary: var(--paper);
+  --secondary-foreground: var(--ink);
+  --muted: var(--glass);
+  --muted-foreground: var(--charcoal);
+  --accent: var(--tannin);
+  --accent-foreground: var(--surface);
+  --destructive: var(--danger);
+  --border: var(--stroke);
+  --input: var(--stroke);
+  --ring: var(--burgundy);
+  --radius: 0.625rem;
+}
+
+/* Dim Mode - "Reading by Candlelight" aesthetic */
+.dim {
+  /* Warm Brown Palette */
+  --paper: #2a1f1f;
+  --ink: #f5e6d3;
+  --charcoal: #e8d5bc;
+  --burgundy: #d97706;
+  /* Warm amber/yellow instead of red */
+  --tannin: #8b5a3c;
+  --forest: #34d399;
+  --amber: #fbbf24;
+  --danger: #f59e0b;
+  /* Warmer orange for errors */
+  --surface: #3d2b2b;
+  --surface-elevated: #4a3535;
+  --glass: rgba(245, 230, 211, 0.05);
+  --stroke: rgba(245, 230, 211, 0.1);
+  --stroke-subtle: rgba(245, 230, 211, 0.05);
+
+  /* Semantic Overrides */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary: var(--burgundy);
+  --primary-foreground: #1a1a1a;
+  /* Dark text on yellow buttons */
+  --secondary: #4a3535;
+  --secondary-foreground: var(--ink);
+  --muted: rgba(245, 230, 211, 0.08);
+  --muted-foreground: var(--charcoal);
+  --accent: var(--tannin);
+  --accent-foreground: var(--ink);
+  --border: var(--stroke);
+  --input: rgba(245, 230, 211, 0.15);
+  --ring: var(--burgundy);
+}
+
 @theme inline {
-  /* Refined color variables */
-  --color-paper: #FAFAF9;
-  --color-ink: #1A1A1A;
-  --color-charcoal: #6B7280;
-  --color-burgundy: #991B1B;
-  --color-tannin: #6B3A2E;
-  --color-forest: #1F6F4F;
-  --color-amber: #C79B17;
-  --color-danger: #B33A3A;
-  --color-surface: #FFFFFF;
-  --color-surface-elevated: #FEFEFE;
-  --color-glass: rgba(17, 17, 15, 0.02);
-  --color-stroke: rgba(17, 17, 15, 0.08);
-  --color-stroke-subtle: rgba(17, 17, 15, 0.04);
+  /* Map Tailwind colors to CSS variables */
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-charcoal: var(--charcoal);
+  --color-burgundy: var(--burgundy);
+  --color-tannin: var(--tannin);
+  --color-forest: var(--forest);
+  --color-amber: var(--amber);
+  --color-danger: var(--danger);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-glass: var(--glass);
+  --color-stroke: var(--stroke);
+  --color-stroke-subtle: var(--stroke-subtle);
 
   /* Font families */
   --font-heading: 'Merriweather', serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Refined radius */
-  --radius-sm: 0.5rem;
-  /* 8px */
-  --radius-md: 0.625rem;
-  /* 10px */
-  --radius-lg: 0.75rem;
-  /* 12px */
-  --radius-xl: 1rem;
-  /* 16px */
-}
-
-:root {
-  /* Base colors */
-  --background: var(--color-paper);
-  --foreground: var(--color-ink);
-
-  /* Component colors */
-  --card: var(--color-surface);
-  --card-foreground: var(--color-ink);
-  --popover: var(--color-surface);
-  --popover-foreground: var(--color-ink);
-
-  /* Primary colors */
-  --primary: var(--color-burgundy);
-  --primary-foreground: var(--color-surface);
-
-  /* Secondary colors */
-  --secondary: var(--color-paper);
-  --secondary-foreground: var(--color-ink);
-
-  /* Muted colors */
-  --muted: var(--color-glass);
-  --muted-foreground: var(--color-charcoal);
-
-  /* Accent colors */
-  --accent: var(--color-tannin);
-  --accent-foreground: var(--color-surface);
-
-  /* Status colors */
-  --success: var(--color-forest);
-  --warning: var(--color-amber);
-  --destructive: var(--color-danger);
-
-  /* Borders and inputs */
-  --border: var(--color-stroke);
-  --input: var(--color-stroke);
-  --ring: var(--color-burgundy);
-
   /* Radius */
-  --radius: 0.625rem;
-  /* 10px */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
 }
 
 @layer base {
@@ -90,6 +126,7 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1,
@@ -124,7 +161,7 @@
     @apply mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10;
   }
 
-  /* Refined typography utilities */
+  /* Typography */
   .text-display {
     @apply text-5xl font-bold tracking-[-0.02em] leading-[1.1];
   }
@@ -161,7 +198,7 @@
     @apply text-xs leading-[1.4] text-[color:var(--color-charcoal)] font-medium tracking-wide;
   }
 
-  /* Premium shadow utilities */
+  /* Shadows */
   .shadow-soft {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.10);
   }
@@ -192,11 +229,9 @@
     transform: scale(1.02);
   }
 
-  /* Focus states */
   .bg-auth-bg {
     background-image: url('/auth-bg.png');
     background-size: cover;
     background-repeat: repeat;
   }
-
 }

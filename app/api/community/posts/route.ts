@@ -50,7 +50,15 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await requireAuth();
+    // Try to get session, but don't require it for public viewing
+    let session;
+    try {
+      session = await requireAuth();
+    } catch {
+      // No session - allow public viewing of global feed only
+      session = null;
+    }
+
     const { searchParams } = new URL(request.url);
 
     const validation = feedQuerySchema.safeParse({
@@ -66,7 +74,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const feed = await communityService.getFeed(session.id, validation.data);
+    // If no session and trying to access following feed, force global
+    const feedType = !session && validation.data.feed_type === "following"
+      ? "global"
+      : validation.data.feed_type;
+
+    const feed = await communityService.getFeed(
+      session?.id || null,
+      { ...validation.data, feed_type: feedType }
+    );
 
     return NextResponse.json({ data: feed.data, pagination: feed.pagination });
   } catch (error: any) {

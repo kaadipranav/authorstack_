@@ -8,11 +8,12 @@ import { Loader2, RefreshCw } from "lucide-react";
 import type { PostWithAuthor } from "@/lib/modules/community/domain/types";
 
 interface FeedListProps {
-  currentUserId: string;
+  currentUserId?: string; // Optional for public viewing
   feedType?: "global" | "following";
 }
 
 export function FeedList({ currentUserId, feedType = "following" }: FeedListProps) {
+  const isAuthenticated = !!currentUserId;
   const [posts, setPosts] = useState<PostWithAuthor[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +32,7 @@ export function FeedList({ currentUserId, feedType = "following" }: FeedListProp
       }
 
       const result = await response.json();
-      
+
       if (append) {
         setPosts((prev) => [...prev, ...result.data]);
       } else {
@@ -85,8 +86,8 @@ export function FeedList({ currentUserId, feedType = "following" }: FeedListProp
 
   return (
     <div className="space-y-6">
-      {/* Post Composer */}
-      <PostComposer onPostCreated={handlePostCreated} />
+      {/* Post Composer - Only for authenticated users */}
+      {isAuthenticated && <PostComposer onPostCreated={handlePostCreated} />}
 
       {/* Refresh Button */}
       <div className="flex justify-end">
@@ -122,9 +123,9 @@ export function FeedList({ currentUserId, feedType = "following" }: FeedListProp
             <PostCard
               key={post.id}
               post={post}
-              currentUserId={currentUserId}
+              currentUserId={currentUserId} // Can be undefined for public viewing
               onDelete={handlePostDeleted}
-              onLikeToggle={() => {}}
+              onLikeToggle={() => { }}
             />
           ))}
 

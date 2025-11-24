@@ -5,6 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { DimModeToggle } from "@/components/ui/dim-mode-toggle";
+import { Logo } from "@/components/ui/logo";
 import { BookOpen, TrendingUp, Calendar, Check, ArrowRight, Sparkles, Target, BarChart3, Zap, Shield, Globe } from "lucide-react";
 
 // Mock book covers data
@@ -164,6 +166,38 @@ export default function LandingPage() {
 
   return (
     <div className="bg-paper">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-stroke bg-surface/80 backdrop-blur">
+        <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-6 py-4">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="relative h-8 w-8 transition-transform duration-300 hover:scale-105">
+              <Logo width={32} height={32} priority className="object-contain" />
+            </div>
+            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-charcoal">
+              AuthorStack
+            </span>
+          </Link>
+
+          <nav className="flex items-center gap-6">
+            <Link
+              href="/community"
+              className="text-sm font-medium text-charcoal hover:text-burgundy transition-colors"
+            >
+              Community
+            </Link>
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <DimModeToggle />
+            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
+              <Link href="/auth/sign-in">Sign in</Link>
+            </Button>
+            <Button asChild size="sm" className="bg-burgundy hover:bg-burgundy/90">
+              <Link href="/auth/sign-up">Start free trial</Link>
+            </Button>
+          </div>
+        </div>
+      </header>
 
       {/* Ink-blot watermark - bottom right */}
       <div
@@ -196,7 +230,7 @@ export default function LandingPage() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative z-10 min-h-screen flex flex-col justify-center">
+      <section className="relative z-10 min-h-screen flex flex-col justify-center pt-20">
         <div className="container mx-auto px-6 py-20 max-w-6xl">
 
           {/* Live Data Feed */}
@@ -387,7 +421,7 @@ export default function LandingPage() {
                 <div>
                   <h3 className="text-xl font-semibold text-ink mb-2">AI Chat Assistant</h3>
                   <p className="text-charcoal mb-4">
-                    Ask questions in plain English. "Why did sales drop last week?" or "Which book should I promote next?" 
+                    Ask questions in plain English. "Why did sales drop last week?" or "Which book should I promote next?"
                     Get instant, context-aware answers from your personal publishing AI.
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -407,7 +441,7 @@ export default function LandingPage() {
                 <div>
                   <h3 className="text-xl font-semibold text-ink mb-2">Revenue Forecasting</h3>
                   <p className="text-charcoal mb-4">
-                    ML models predict your next 30-90 days of revenue with confidence scores. 
+                    ML models predict your next 30-90 days of revenue with confidence scores.
                     See which books will perform, identify at-risk titles, and plan accordingly.
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -427,7 +461,7 @@ export default function LandingPage() {
                 <div>
                   <h3 className="text-xl font-semibold text-ink mb-2">Smart Recommendations</h3>
                   <p className="text-charcoal mb-4">
-                    AI analyzes your catalog and suggests pricing optimizations, marketing strategies, and 
+                    AI analyzes your catalog and suggests pricing optimizations, marketing strategies, and
                     cross-promotion opportunities. Each recommendation includes projected impact.
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -447,7 +481,7 @@ export default function LandingPage() {
                 <div>
                   <h3 className="text-xl font-semibold text-ink mb-2">Automated Insights</h3>
                   <p className="text-charcoal mb-4">
-                    Wake up to daily briefings on sales trends, competitor movements, and performance alerts. 
+                    Wake up to daily briefings on sales trends, competitor movements, and performance alerts.
                     The AI monitors everything 24/7 so you don't have to.
                   </p>
                   <div className="flex flex-wrap gap-2">

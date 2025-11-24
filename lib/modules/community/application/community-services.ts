@@ -24,7 +24,7 @@ export class CommunityService {
 
   async getAuthorProfile(profileId: string): Promise<AuthorProfile | null> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { data, error } = await supabase
       .from("author_profiles")
       .select("*")
@@ -37,7 +37,7 @@ export class CommunityService {
 
   async getAuthorProfileBySlug(slug: string): Promise<AuthorProfile | null> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { data, error } = await supabase
       .from("author_profiles")
       .select("*")
@@ -53,7 +53,7 @@ export class CommunityService {
     updates: UpdateAuthorProfileRequest
   ): Promise<AuthorProfile | null> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { data, error } = await supabase
       .from("author_profiles")
       .update(updates)
@@ -74,7 +74,7 @@ export class CommunityService {
     request: CreatePostRequest
   ): Promise<Post | null> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { data, error } = await supabase
       .from("posts")
       .insert({
@@ -91,13 +91,13 @@ export class CommunityService {
       console.error("Failed to create post:", error);
       return null;
     }
-    
+
     return data as Post;
   }
 
   async getPost(postId: string, userId?: string): Promise<PostWithAuthor | null> {
     const supabase = await createSupabaseServerClient();
-    
+
     let query = supabase
       .from("posts")
       .select(`
@@ -134,7 +134,7 @@ export class CommunityService {
         .eq("post_id", postId)
         .eq("user_id", userId)
         .single();
-      
+
       userHasLiked = !!likeData;
     }
 
@@ -156,7 +156,7 @@ export class CommunityService {
     updates: UpdatePostRequest
   ): Promise<Post | null> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { data, error } = await supabase
       .from("posts")
       .update(updates)
@@ -171,7 +171,7 @@ export class CommunityService {
 
   async deletePost(postId: string, authorId: string): Promise<boolean> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { error } = await supabase
       .from("posts")
       .update({ is_deleted: true })
@@ -182,20 +182,20 @@ export class CommunityService {
   }
 
   async getFeed(
-    userId: string,
+    userId: string | null,
     query: FeedQuery
   ): Promise<PaginatedResponse<PostWithAuthor>> {
     const supabase = await createSupabaseServerClient();
-    
+
     const page = query.page || 1;
     const limit = query.limit || 20;
     const offset = (page - 1) * limit;
 
-    // Determine feed type
-    const feedType = query.feed_type || "following";
+    // Determine feed type - force global if no userId
+    const feedType = !userId ? "global" : (query.feed_type || "following");
 
     let postsQuery;
-    
+
     if (feedType === "global") {
       // Global feed: all public posts
       postsQuery = supabase
@@ -223,7 +223,20 @@ export class CommunityService {
         .order("created_at", { ascending: false })
         .range(offset, offset + limit - 1);
     } else {
-      // Following feed: posts from followed authors + own posts
+      // Following feed: posts from followed authors + own posts (requires userId)
+      if (!userId) {
+        // Fallback to empty feed if somehow following is requested without userId
+        return {
+          data: [],
+          pagination: {
+            page,
+            limit,
+            total: 0,
+            has_more: false,
+          },
+        };
+      }
+
       // Get followed user IDs
       const { data: followData } = await supabase
         .from("follows")
@@ -272,15 +285,18 @@ export class CommunityService {
       };
     }
 
-    // Get user likes for all posts
-    const postIds = data.map((p) => p.id);
-    const { data: likesData } = await supabase
-      .from("post_likes")
-      .select("post_id")
-      .eq("user_id", userId)
-      .in("post_id", postIds);
+    // Get user likes for all posts (only if userId is provided)
+    let likedPostIds = new Set<string>();
+    if (userId) {
+      const postIds = data.map((p) => p.id);
+      const { data: likesData } = await supabase
+        .from("post_likes")
+        .select("post_id")
+        .eq("user_id", userId)
+        .in("post_id", postIds);
 
-    const likedPostIds = new Set(likesData?.map((l) => l.post_id) || []);
+      likedPostIds = new Set(likesData?.map((l) => l.post_id) || []);
+    }
 
     const posts: PostWithAuthor[] = data.map((post) => ({
       ...post,
@@ -310,7 +326,7 @@ export class CommunityService {
 
   async likePost(postId: string, userId: string): Promise<boolean> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { error } = await supabase
       .from("post_likes")
       .insert({ post_id: postId, user_id: userId });
@@ -320,7 +336,7 @@ export class CommunityService {
 
   async unlikePost(postId: string, userId: string): Promise<boolean> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { error } = await supabase
       .from("post_likes")
       .delete()
@@ -339,7 +355,7 @@ export class CommunityService {
     request: CreateCommentRequest
   ): Promise<PostComment | null> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { data, error } = await supabase
       .from("post_comments")
       .insert({
@@ -357,7 +373,7 @@ export class CommunityService {
 
   async getComments(postId: string): Promise<PostCommentWithAuthor[]> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { data, error } = await supabase
       .from("post_comments")
       .select(`
@@ -389,7 +405,7 @@ export class CommunityService {
 
   async deleteComment(commentId: string, authorId: string): Promise<boolean> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { error } = await supabase
       .from("post_comments")
       .update({ is_deleted: true })
@@ -407,7 +423,7 @@ export class CommunityService {
     if (followerId === followingId) return false;
 
     const supabase = await createSupabaseServerClient();
-    
+
     const { error } = await supabase
       .from("follows")
       .insert({ follower_id: followerId, following_id: followingId });
@@ -417,7 +433,7 @@ export class CommunityService {
 
   async unfollowUser(followerId: string, followingId: string): Promise<boolean> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { error } = await supabase
       .from("follows")
       .delete()
@@ -429,7 +445,7 @@ export class CommunityService {
 
   async isFollowing(followerId: string, followingId: string): Promise<boolean> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { data } = await supabase
       .from("follows")
       .select("id")
@@ -442,7 +458,7 @@ export class CommunityService {
 
   async getFollowers(userId: string, page = 1, limit = 50): Promise<PaginatedResponse<AuthorProfile>> {
     const supabase = await createSupabaseServerClient();
-    
+
     const offset = (page - 1) * limit;
 
     const { data, error, count } = await supabase
@@ -473,7 +489,7 @@ export class CommunityService {
 
   async getFollowing(userId: string, page = 1, limit = 50): Promise<PaginatedResponse<AuthorProfile>> {
     const supabase = await createSupabaseServerClient();
-    
+
     const offset = (page - 1) * limit;
 
     const { data, error, count } = await supabase
@@ -512,7 +528,7 @@ export class CommunityService {
     limit = 20
   ): Promise<PaginatedResponse<NotificationWithActor>> {
     const supabase = await createSupabaseServerClient();
-    
+
     const offset = (page - 1) * limit;
 
     const { data, error, count } = await supabase
@@ -543,10 +559,10 @@ export class CommunityService {
       ...notif,
       actor: notif.actor
         ? {
-            id: notif.actor.id,
-            display_name: notif.actor_profile?.display_name || notif.actor.full_name,
-            avatar_url: notif.actor_profile?.avatar_url || null,
-          }
+          id: notif.actor.id,
+          display_name: notif.actor_profile?.display_name || notif.actor.full_name,
+          avatar_url: notif.actor_profile?.avatar_url || null,
+        }
         : null,
     }));
 
@@ -563,7 +579,7 @@ export class CommunityService {
 
   async markNotificationAsRead(notificationId: string, userId: string): Promise<boolean> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { error } = await supabase
       .from("notifications")
       .update({ is_read: true })
@@ -575,7 +591,7 @@ export class CommunityService {
 
   async markAllNotificationsAsRead(userId: string): Promise<boolean> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { error } = await supabase
       .from("notifications")
       .update({ is_read: true })
@@ -587,7 +603,7 @@ export class CommunityService {
 
   async getUnreadNotificationCount(userId: string): Promise<number> {
     const supabase = await createSupabaseServerClient();
-    
+
     const { count } = await supabase
       .from("notifications")
       .select("*", { count: "exact", head: true })
