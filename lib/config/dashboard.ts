@@ -12,6 +12,11 @@ export const dashboardNav: NavItem[] = [
     intent: "primary",
   },
   {
+    title: "Community",
+    href: "/dashboard/community",
+    intent: "primary",
+  },
+  {
     title: "Launch Checklists",
     href: "/dashboard/checklists",
     intent: "primary",
