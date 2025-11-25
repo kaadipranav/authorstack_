@@ -36,14 +36,14 @@ export default async function LeaderboardPage({
     const allTimeLeaderboards = leaderboards.filter((lb) => lb.time_window === "all_time");
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="space-y-8">
             {/* Header */}
-            <div className="mb-8">
-                <div className="flex items-center gap-3 mb-2">
-                    <Trophy className="h-8 w-8 text-primary" />
-                    <h1 className="text-3xl font-bold">Leaderboard</h1>
+            <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-3">
+                    <Trophy className="h-8 w-8 text-burgundy" />
+                    <h1 className="text-display text-ink">Leaderboard</h1>
                 </div>
-                <p className="text-muted-foreground">
+                <p className="text-body text-charcoal">
                     Top authors ranked by sales velocity, engagement, and community activity
                 </p>
             </div>
@@ -60,8 +60,8 @@ export default async function LeaderboardPage({
                     <a
                         href="?slug=weekly-authors-overall"
                         className={`px-4 py-2 font-medium transition-colors ${slug.includes("weekly")
-                                ? "border-b-2 border-primary text-primary"
-                                : "text-muted-foreground hover:text-foreground"
+                            ? "border-b-2 border-primary text-primary"
+                            : "text-muted-foreground hover:text-foreground"
                             }`}
                     >
                         Weekly
@@ -69,8 +69,8 @@ export default async function LeaderboardPage({
                     <a
                         href="?slug=monthly-authors-overall"
                         className={`px-4 py-2 font-medium transition-colors ${slug.includes("monthly")
-                                ? "border-b-2 border-primary text-primary"
-                                : "text-muted-foreground hover:text-foreground"
+                            ? "border-b-2 border-primary text-primary"
+                            : "text-muted-foreground hover:text-foreground"
                             }`}
                     >
                         Monthly
@@ -78,8 +78,8 @@ export default async function LeaderboardPage({
                     <a
                         href="?slug=alltime-authors-overall"
                         className={`px-4 py-2 font-medium transition-colors ${slug.includes("alltime")
-                                ? "border-b-2 border-primary text-primary"
-                                : "text-muted-foreground hover:text-foreground"
+                            ? "border-b-2 border-primary text-primary"
+                            : "text-muted-foreground hover:text-foreground"
                             }`}
                     >
                         All Time
@@ -91,8 +91,8 @@ export default async function LeaderboardPage({
                     <a
                         href={`?slug=${slug.includes("weekly") ? "weekly" : slug.includes("monthly") ? "monthly" : "alltime"}-authors-overall`}
                         className={`px-3 py-1 rounded-full text-sm transition-colors ${slug.includes("overall")
-                                ? "bg-primary text-primary-foreground"
-                                : "bg-muted hover:bg-muted/80"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted hover:bg-muted/80"
                             }`}
                     >
                         All
@@ -108,8 +108,8 @@ export default async function LeaderboardPage({
                                     key={category}
                                     href={`?slug=${categoryLeaderboardSlug}`}
                                     className={`px-3 py-1 rounded-full text-sm transition-colors ${slug === categoryLeaderboardSlug
-                                            ? "bg-primary text-primary-foreground"
-                                            : "bg-muted hover:bg-muted/80"
+                                        ? "bg-primary text-primary-foreground"
+                                        : "bg-muted hover:bg-muted/80"
                                         }`}
                                 >
                                     {category}
@@ -132,9 +132,9 @@ export default async function LeaderboardPage({
             </Suspense>
 
             {/* Info Box */}
-            <div className="mt-8 p-4 rounded-lg bg-muted/50 border">
-                <h3 className="font-semibold mb-2">How Rankings Work</h3>
-                <div className="text-sm text-muted-foreground space-y-1">
+            <div className="mt-8 p-4 rounded-lg bg-glass border border-stroke">
+                <h3 className="text-heading-3 text-ink mb-2">How Rankings Work</h3>
+                <div className="text-small text-charcoal space-y-1">
                     <p>• <strong>Sales (40%):</strong> Recent sales velocity and volume</p>
                     <p>• <strong>Engagement (30%):</strong> Follower growth and profile views</p>
                     <p>• <strong>Community (30%):</strong> Posts, comments, and interactions</p>

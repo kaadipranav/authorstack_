@@ -58,14 +58,14 @@ export default function PromoMarketplacePage() {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="space-y-8">
             {/* Header */}
-            <div className="mb-8">
-                <div className="flex items-center gap-3 mb-2">
-                    <Zap className="h-8 w-8 text-primary" />
-                    <h1 className="text-3xl font-bold">Promo Marketplace</h1>
+            <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-3">
+                    <Zap className="h-8 w-8 text-burgundy" />
+                    <h1 className="text-display text-ink">Promo Marketplace</h1>
                 </div>
-                <p className="text-muted-foreground">
+                <p className="text-body text-charcoal">
                     Boost your book's visibility and reach more readers
                 </p>
             </div>
@@ -96,7 +96,7 @@ export default function PromoMarketplacePage() {
 
             {/* Boost Slots */}
             <div className="mb-12">
-                <h2 className="text-2xl font-bold mb-4">Boost Slots</h2>
+                <h2 className="text-heading-2 text-ink mb-4">Boost Slots</h2>
                 <div className="grid md:grid-cols-3 gap-6">
                     <PromoCard slotType="explore" onBoost={handleBoostClick} />
                     <PromoCard slotType="community_feed" onBoost={handleBoostClick} />
@@ -106,13 +106,13 @@ export default function PromoMarketplacePage() {
 
             {/* Earn Free Credits */}
             <div className="mb-12">
-                <h2 className="text-2xl font-bold mb-4">Earn Free Credits</h2>
+                <h2 className="text-heading-2 text-ink mb-4">Earn Free Credits</h2>
                 <div className="grid md:grid-cols-2 gap-6">
                     {/* Follower Milestones */}
                     <div className="border rounded-lg p-6 bg-card">
                         <div className="flex items-center gap-3 mb-4">
-                            <TrendingUp className="h-6 w-6 text-primary" />
-                            <h3 className="font-semibold text-lg">Follower Milestones</h3>
+                            <TrendingUp className="h-6 w-6 text-burgundy" />
+                            <h3 className="text-heading-3 text-ink">Follower Milestones</h3>
                         </div>
                         <div className="space-y-3">
                             {FOLLOWER_MILESTONES.map((milestone) => (
@@ -134,8 +134,8 @@ export default function PromoMarketplacePage() {
                     {/* Daily Login */}
                     <div className="border rounded-lg p-6 bg-card">
                         <div className="flex items-center gap-3 mb-4">
-                            <Calendar className="h-6 w-6 text-primary" />
-                            <h3 className="font-semibold text-lg">Daily Login Streak</h3>
+                            <Calendar className="h-6 w-6 text-burgundy" />
+                            <h3 className="text-heading-3 text-ink">Daily Login Streak</h3>
                         </div>
                         <div className="space-y-3">
                             <div className="flex items-center justify-between p-3 rounded-lg bg-muted">
@@ -157,7 +157,7 @@ export default function PromoMarketplacePage() {
 
             {/* Purchase Credits */}
             <div>
-                <h2 className="text-2xl font-bold mb-4">Purchase Credits</h2>
+                <h2 className="text-heading-2 text-ink mb-4">Purchase Credits</h2>
                 <div className="grid md:grid-cols-3 gap-6">
                     {CREDIT_PACKAGES.map((pkg) => (
                         <div

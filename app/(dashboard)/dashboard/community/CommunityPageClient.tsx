@@ -41,10 +41,10 @@ export function CommunityPageClient({ userId, hasAcceptedGuidelines }: Community
                 onDecline={handleDecline}
             />
 
-            <div className="container mx-auto px-6 py-8 max-w-4xl">
-                <div className="mb-8">
-                    <h1 className="text-3xl font-serif font-bold text-ink mb-2">Community</h1>
-                    <p className="text-charcoal">
+            <div className="space-y-8">
+                <div className="flex flex-col gap-2">
+                    <h1 className="text-display text-ink">Community</h1>
+                    <p className="text-body text-charcoal">
                         Connect with fellow authors, share updates, and celebrate milestones together.
                     </p>
                 </div>

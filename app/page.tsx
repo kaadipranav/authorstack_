@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DimModeToggle } from "@/components/ui/dim-mode-toggle";
 import { Logo } from "@/components/ui/logo";
-import { BookOpen, TrendingUp, Calendar, Check, ArrowRight, Sparkles, Target, BarChart3, Zap, Shield, Globe } from "lucide-react";
+import { BookOpen, TrendingUp, Calendar, Check, ArrowRight, Sparkles, Target, BarChart3, Zap, Shield, Globe, Trophy, Users } from "lucide-react";
 
 // Mock book covers data
 const bookCovers = [
@@ -184,6 +184,12 @@ export default function LandingPage() {
               className="text-sm font-medium text-charcoal hover:text-burgundy transition-colors"
             >
               Community
+            </Link>
+            <Link
+              href="/dashboard/leaderboard"
+              className="text-sm font-medium text-charcoal hover:text-burgundy transition-colors"
+            >
+              Leaderboard
             </Link>
           </nav>
 
@@ -498,6 +504,147 @@ export default function LandingPage() {
             <p className="text-charcoal mb-6">
               <Shield className="inline h-5 w-5 mr-2 text-burgundy" />
               Your data never trains external models. All AI processing respects your privacy.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Community Showcase Section */}
+      <section className="relative z-10 py-20">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-burgundy/10 border border-burgundy/20 rounded-full px-4 py-2 mb-6">
+              <Globe className="h-4 w-4 text-burgundy" />
+              <span className="text-sm font-semibold text-burgundy">Author Community</span>
+            </div>
+            <h2 className="font-serif text-3xl md:text-4xl text-ink mb-4">
+              Connect With Fellow Authors
+            </h2>
+            <p className="text-lg text-charcoal max-w-2xl mx-auto">
+              Share your journey, get feedback, and build relationships with other indie authors.
+              A supportive community that understands the publishing grind.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
+            <Card className="border-2 border-stroke bg-surface p-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-lg bg-burgundy/10 flex items-center justify-center flex-shrink-0">
+                  <BookOpen className="h-6 w-6 text-burgundy" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-ink mb-2">Share Your Work</h3>
+                  <p className="text-charcoal">
+                    Post updates about your books, launches, and milestones. Get genuine feedback
+                    from authors who've been there.
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="border-2 border-stroke bg-surface p-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-lg bg-burgundy/10 flex items-center justify-center flex-shrink-0">
+                  <Users className="h-6 w-6 text-burgundy" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-ink mb-2">Build Your Network</h3>
+                  <p className="text-charcoal">
+                    Follow authors in your genre, engage with their content, and grow your
+                    author platform organically.
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          <div className="text-center">
+            <Button
+              asChild
+              size="lg"
+              className="bg-burgundy hover:bg-burgundy/90 text-surface px-8 py-6 text-lg"
+            >
+              <Link href="/community">
+                Explore Community
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+            <p className="text-sm text-charcoal mt-4">
+              Free to browse • Sign up to post and engage
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Leaderboard Showcase Section */}
+      <section className="relative z-10 bg-surface border-y border-stroke py-20">
+        <div className="container mx-auto px-6 max-w-6xl">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-burgundy/10 border border-burgundy/20 rounded-full px-4 py-2 mb-6">
+              <Trophy className="h-4 w-4 text-burgundy" />
+              <span className="text-sm font-semibold text-burgundy">Rankings & Recognition</span>
+            </div>
+            <h2 className="font-serif text-3xl md:text-4xl text-ink mb-4">
+              See Where You Stand
+            </h2>
+            <p className="text-lg text-charcoal max-w-2xl mx-auto">
+              Track your ranking among indie authors. Earn badges for milestones and achievements.
+              Get discovered by readers looking for top authors in your genre.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <Card className="border-2 border-stroke bg-surface p-6">
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-600 flex items-center justify-center mx-auto mb-4">
+                  <Trophy className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-ink mb-2">Multi-Metric Ranking</h3>
+                <p className="text-sm text-charcoal">
+                  Ranked by sales velocity (40%), engagement (30%), and community activity (30%)
+                </p>
+              </div>
+            </Card>
+
+            <Card className="border-2 border-stroke bg-surface p-6">
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-300 to-purple-600 flex items-center justify-center mx-auto mb-4">
+                  <Sparkles className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-ink mb-2">Achievement Badges</h3>
+                <p className="text-sm text-charcoal">
+                  Earn badges for Top 10 rankings, follower milestones, and rising author status
+                </p>
+              </div>
+            </Card>
+
+            <Card className="border-2 border-stroke bg-surface p-6">
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-300 to-green-600 flex items-center justify-center mx-auto mb-4">
+                  <TrendingUp className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-ink mb-2">Category Leaders</h3>
+                <p className="text-sm text-charcoal">
+                  Compete in 12+ genre categories plus overall rankings (weekly, monthly, all-time)
+                </p>
+              </div>
+            </Card>
+          </div>
+
+          <div className="text-center">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-2 border-stroke text-ink hover:bg-glass px-8 py-6 text-lg"
+            >
+              <Link href="/dashboard/leaderboard">
+                View Leaderboard
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+            <p className="text-sm text-charcoal mt-4">
+              Free to view • Sign up to compete and earn badges
             </p>
           </div>
         </div>
