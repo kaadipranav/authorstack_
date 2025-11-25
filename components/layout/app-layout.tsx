@@ -21,7 +21,8 @@ import {
   Bell,
   Plus,
   Trophy,
-  Zap
+  Zap,
+  Sparkles
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -40,6 +41,7 @@ const navigationItems = [
   { name: "Community", href: "/dashboard/community", icon: Users },
   { name: "Leaderboard", href: "/dashboard/leaderboard", icon: Trophy },
   { name: "Promote", href: "/dashboard/promo-marketplace", icon: Zap },
+  { name: "AI Assistant", href: "/dashboard/ai-assistant", icon: Sparkles },
   { name: "Insights", href: "/dashboard/insights", icon: FileText },
   { name: "Integrations", href: "/dashboard/connections", icon: Cog },
   { name: "Settings", href: "/dashboard/profile", icon: Settings },

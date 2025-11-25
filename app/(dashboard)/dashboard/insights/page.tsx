@@ -26,10 +26,22 @@ export default function InsightsPage() {
 
     const fetchDashboard = async () => {
         try {
-            const response = await fetch('/api/insights?days=30');
-            if (!response.ok) throw new Error('Failed to fetch');
-            const data = await response.json();
-            setDashboard(data.data);
+            // Fetch AI recommendations
+            const recsResponse = await fetch('/api/ai/insights');
+            const predsResponse = await fetch('/api/ai/predictions');
+
+            if (recsResponse.ok && predsResponse.ok) {
+                const recsData = await recsResponse.json();
+                const predsData = await predsResponse.json();
+
+                setDashboard({
+                    revenuePredictions: predsData.data?.predictions?.filter((p: any) => p.predictionType === 'revenue_forecast') || [],
+                    competitorIntelligence: [],
+                    marketingMetrics: [],
+                    aiRecommendations: recsData.data?.recommendations || [],
+                    observations: [],
+                });
+            }
         } catch (error) {
             console.error('Failed to fetch insights:', error);
         } finally {
