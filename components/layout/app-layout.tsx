@@ -19,7 +19,9 @@ import {
   TrendingUp,
   Users,
   Bell,
-  Plus
+  Plus,
+  Trophy,
+  Zap
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -35,6 +37,9 @@ const navigationItems = [
   { name: "Competitors", href: "/dashboard/competitors", icon: TrendingUp },
   { name: "A/B Tests", href: "/dashboard/ab-tests", icon: ChartBar },
   { name: "Calendar", href: "/dashboard/calendar", icon: Calendar },
+  { name: "Community", href: "/dashboard/community", icon: Users },
+  { name: "Leaderboard", href: "/dashboard/leaderboard", icon: Trophy },
+  { name: "Promote", href: "/dashboard/promo-marketplace", icon: Zap },
   { name: "Insights", href: "/dashboard/insights", icon: FileText },
   { name: "Integrations", href: "/dashboard/connections", icon: Cog },
   { name: "Settings", href: "/dashboard/profile", icon: Settings },
@@ -127,8 +132,8 @@ function Sidebar({ isCollapsed }: { isCollapsed: boolean }) {
                   <Link
                     href={item.href as Route}
                     className={`relative flex items-center gap-3 rounded-md px-3.5 py-2.5 text-small transition-all duration-200 ease-[cubic-bezier(.2,.9,.2,1)] ${isActive
-                        ? 'bg-burgundy/10 text-ink font-medium shadow-soft'
-                        : 'text-ink hover:bg-glass hover:shadow-soft'
+                      ? 'bg-burgundy/10 text-ink font-medium shadow-soft'
+                      : 'text-ink hover:bg-glass hover:shadow-soft'
                       }`}
                   >
                     {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1.5 rounded-r bg-burgundy" />}
@@ -209,7 +214,7 @@ function Topbar() {
 
           <div className="flex items-center gap-2">
             <DimModeToggle />
-            
+
             <Button variant="ghost" size="icon" className="relative">
               <Bell className="h-5 w-5" />
               <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-burgundy"></span>
@@ -246,8 +251,8 @@ function MobileNav() {
               key={item.name}
               href={item.href as Route}
               className={`flex flex-col items-center gap-1 rounded-lg px-2 py-3 text-mini transition-all duration-200 ease-[cubic-bezier(.2,.9,.2,1)] ${isActive
-                  ? 'bg-burgundy/10 text-ink'
-                  : 'text-ink hover:bg-glass'
+                ? 'bg-burgundy/10 text-ink'
+                : 'text-ink hover:bg-glass'
                 }`}
             >
               <Icon className="h-5 w-5" />

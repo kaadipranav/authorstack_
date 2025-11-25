@@ -7,6 +7,14 @@
     {
       "path": "/api/ingestion/cron",
       "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/leaderboard-weekly",
+      "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/boost-status",
+      "schedule": "*/5 * * * *"
     }
   ],
   "rewrites": [
