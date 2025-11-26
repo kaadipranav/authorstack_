@@ -1,5 +1,5 @@
 # AuthorStack Robots.txt
-# https://authorstack.com
+# https://authorstack.vercel.app
 
 User-agent: *
 Allow: /
@@ -8,4 +8,4 @@ Disallow: /dashboard/
 Disallow: /auth/
 
 # Sitemaps
-Sitemap: https://authorstack.com/sitemap.xml
+Sitemap: https://authorstack.vercel.app/sitemap.xml
