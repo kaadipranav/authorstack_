@@ -2,41 +2,35 @@
 
 ## Problem
 
-Vercel's free tier (Hobby) only allows **2 cron jobs**, but AuthorStack needs 4:
+Vercel's free tier (Hobby) has two limitations:
+1. Only **2 cron jobs** allowed
+2. Cron jobs can only run **once per day** (no frequent intervals)
+
+AuthorStack needs 4 scheduled tasks:
 1. Ingestion - Daily at midnight
 2. Leaderboard - Daily at 2 AM
-3. Boost Status - Every 5 minutes
+3. Boost Status - Daily (was every 5 min, but Hobby doesn't allow)
 4. Analytics - Daily at 3 AM
 
 ## Solution: Master Cron Job
 
-Instead of 4 separate cron jobs, we use **1 master cron job** that orchestrates all tasks internally.
+Instead of 4 separate cron jobs, we use **1 master cron job** that runs all tasks sequentially.
 
 ### How It Works
 
 **File:** `app/api/cron/master/route.ts`
 
-The master cron runs **every 5 minutes** and checks the current time to determine which jobs to execute:
+The master cron runs **once daily at midnight** and executes all 4 tasks:
 
 ```typescript
-// Boost Status - Always runs (every 5 min)
+// Run all jobs sequentially at midnight
+await fetch('/api/ingestion/cron')
+await fetch('/api/cron/analytics')
+await fetch('/api/cron/leaderboard-weekly')
 await fetch('/api/cron/boost-status')
-
-// Ingestion - Only at midnight (00:00-00:05)
-if (hour === 0 && minute < 5) {
-  await fetch('/api/ingestion/cron')
-}
-
-// Leaderboard - Only at 2 AM (02:00-02:05)
-if (hour === 2 && minute < 5) {
-  await fetch('/api/cron/leaderboard-weekly')
-}
-
-// Analytics - Only at 3 AM (03:00-03:05)
-if (hour === 3 && minute < 5) {
-  await fetch('/api/cron/analytics')
-}
 ```
+
+**Note:** Boost status was originally designed to run every 5 minutes, but Vercel Hobby tier only allows daily crons. The boost expiration logic still works correctly when checked daily.
 
 ### Configuration
 
@@ -46,13 +40,15 @@ if (hour === 3 && minute < 5) {
   "crons": [
     {
       "path": "/api/cron/master",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }
 ```
 
 This uses only **1 cron job slot**, leaving 1 free for future use.
+
+**Schedule:** Runs daily at midnight (00:00 UTC)
 
 ## Benefits
 
