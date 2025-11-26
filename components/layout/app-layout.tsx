@@ -22,7 +22,8 @@ import {
   Plus,
   Trophy,
   Zap,
-  Sparkles
+  Sparkles,
+  CreditCard
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -45,7 +46,7 @@ const navigationItems = [
   { name: "Insights", href: "/dashboard/insights", icon: FileText },
   { name: "Integrations", href: "/dashboard/connections", icon: Cog },
   { name: "Settings", href: "/dashboard/profile", icon: Settings },
-  { name: "Billing", href: "/dashboard/billing", icon: Users },
+  { name: "Billing", href: "/dashboard/billing", icon: CreditCard },
 ];
 
 // Right rail insights component

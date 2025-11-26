@@ -180,6 +180,12 @@ export default function LandingPage() {
 
           <nav className="flex items-center gap-6">
             <Link
+              href="/pricing"
+              className="text-sm font-medium text-charcoal hover:text-burgundy transition-colors"
+            >
+              Pricing
+            </Link>
+            <Link
               href="/community"
               className="text-sm font-medium text-charcoal hover:text-burgundy transition-colors"
             >

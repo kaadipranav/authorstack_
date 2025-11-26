@@ -1,7 +1,7 @@
 # AuthorStack - Current Status Report
 
 **Last Updated:** November 26, 2025  
-**Version:** 0.1.0  
+**Version:** 0.1.1  
 **Overall Completion:** 100%
 
 ---
@@ -14,6 +14,7 @@
 - ✅ Session management
 - ✅ User profiles
 - ✅ Password reset flow
+- ✅ New user onboarding wizard
 
 ### Database & Backend
 - ✅ Supabase PostgreSQL database
@@ -21,6 +22,21 @@
 - ✅ All database tables and relationships
 - ✅ Database triggers and functions
 - ✅ Service layer architecture
+
+### **Pricing & Billing (NEW!)** 💳
+- ✅ Public pricing page (`/pricing`)
+- ✅ 3-tier pricing (Free $0, Pro $19/mo, Enterprise $79/mo)
+- ✅ Billing dashboard (`/dashboard/billing`)
+- ✅ Subscription management UI
+- ✅ Payment method display
+- ✅ Invoice history
+- ✅ Plan comparison table
+
+### **Onboarding (NEW!)** 🎉
+- ✅ 3-step onboarding wizard
+- ✅ Platform connection guidance
+- ✅ First book setup flow
+- ✅ Skip/complete tracking
 
 ### Books Management
 - ✅ Create, read, update, delete books
