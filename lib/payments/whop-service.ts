@@ -1,4 +1,5 @@
 import { createSupabaseServiceClient } from "@/lib/supabase/service";
+import { sendSubscriptionUpdated } from "@/lib/email/resend";
 
 export type WhopSubscriptionStatus = "active" | "inactive" | "cancelled" | "past_due";
 
@@ -54,9 +55,17 @@ export async function upsertWhopSubscription(
 
 export async function updateProfileSubscriptionTier(
   profileId: string,
-  tier: "free" | "pro" | "enterprise"
+  tier: "free" | "pro" | "enterprise",
+  planName?: string
 ): Promise<void> {
   const supabase = await createSupabaseServiceClient();
+
+  // Get user email before updating
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("email")
+    .eq("id", profileId)
+    .single();
 
   const { error } = await supabase
     .from("profiles")
@@ -65,6 +74,21 @@ export async function updateProfileSubscriptionTier(
 
   if (error) {
     throw new Error(`Failed to update profile subscription tier: ${error.message}`);
+  }
+
+  // Send email notification
+  if (profile?.email) {
+    try {
+      await sendSubscriptionUpdated(
+        profile.email,
+        tier,
+        planName || `${tier.charAt(0).toUpperCase() + tier.slice(1)} Plan`
+      );
+      console.log(`[Email] Subscription update email sent to ${profile.email}`);
+    } catch (emailError) {
+      console.error("[Email] Failed to send subscription update email:", emailError);
+      // Don't throw - email failure shouldn't break the subscription update
+    }
   }
 }
 
@@ -208,7 +232,7 @@ export async function processWhopSubscriptionEvent(event: WhopWebhookEvent): Pro
     await upsertWhopSubscription(profileId, subscriptionData);
 
     const tier = mapWhopStatusToTier(status, planName);
-    await updateProfileSubscriptionTier(profileId, tier);
+    await updateProfileSubscriptionTier(profileId, tier, planName);
 
     console.log(`[Whop] ✓ Updated subscription for profile ${profileId}: ${tier}`);
 

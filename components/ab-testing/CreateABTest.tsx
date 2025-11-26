@@ -6,15 +6,48 @@ import { Input } from "@/components/ui/input";
 
 export function CreateABTest() {
     const [name, setName] = useState("");
+    const [testType, setTestType] = useState("cover");
     const [variantA, setVariantA] = useState("");
     const [variantB, setVariantB] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleCreate = () => {
-        // Placeholder: In a real app this would call an API.
-        console.log("Create test:", { name, variantA, variantB });
-        setName("");
-        setVariantA("");
-        setVariantB("");
+    const handleCreate = async () => {
+        if (!name || !variantA || !variantB) {
+            alert("Please fill in all fields");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const res = await fetch("/api/ab-tests", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    test_name: name,
+                    test_type: testType,
+                    variants: [
+                        { name: "Variant A", data: { value: variantA } },
+                        { name: "Variant B", data: { value: variantB } },
+                    ],
+                }),
+            });
+
+            if (res.ok) {
+                setName("");
+                setVariantA("");
+                setVariantB("");
+                // Reload to show new test
+                window.location.reload();
+            } else {
+                const error = await res.json();
+                alert(error.error || "Failed to create test");
+            }
+        } catch (error) {
+            console.error("Failed to create test:", error);
+            alert("Failed to create test");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -26,6 +59,20 @@ export function CreateABTest() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
+                <div>
+                    <label className="block text-sm font-medium mb-2">Test Type</label>
+                    <select
+                        value={testType}
+                        onChange={(e) => setTestType(e.target.value)}
+                        className="w-full px-3 py-2 border border-burgundy/20 rounded-lg bg-paper"
+                    >
+                        <option value="cover">Cover</option>
+                        <option value="title">Title</option>
+                        <option value="description">Description</option>
+                        <option value="price">Price</option>
+                        <option value="keywords">Keywords</option>
+                    </select>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Input
                         placeholder="Variant A"
@@ -38,8 +85,8 @@ export function CreateABTest() {
                         onChange={(e) => setVariantB(e.target.value)}
                     />
                 </div>
-                <Button onClick={handleCreate} className="w-full">
-                    Start Test
+                <Button onClick={handleCreate} className="w-full" disabled={loading}>
+                    {loading ? "Creating..." : "Create Test"}
                 </Button>
             </div>
         </div>

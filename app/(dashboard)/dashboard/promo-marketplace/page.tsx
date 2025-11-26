@@ -13,6 +13,7 @@ export default function PromoMarketplacePage() {
     const [showBoostModal, setShowBoostModal] = useState(false);
     const [selectedSlot, setSelectedSlot] = useState<BoostSlotType>("explore");
     const [dailyLoginClaimed, setDailyLoginClaimed] = useState(false);
+    const [purchasingPackage, setPurchasingPackage] = useState<number | null>(null);
 
     useEffect(() => {
         fetchCreditBalance();
@@ -54,6 +55,31 @@ export default function PromoMarketplacePage() {
             }
         } catch (err) {
             console.error("Failed to claim daily login:", err);
+        }
+    };
+
+    const handlePurchase = async (credits: number, price: number) => {
+        setPurchasingPackage(credits);
+        try {
+            const res = await fetch("/api/payments/create-checkout", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ credits, price }),
+            });
+
+            const data = await res.json();
+
+            if (data.success && data.checkoutUrl) {
+                // Redirect to Whop checkout
+                window.location.href = data.checkoutUrl;
+            } else {
+                alert(data.error || "Failed to create checkout. Please try again.");
+                setPurchasingPackage(null);
+            }
+        } catch (err) {
+            console.error("Failed to create checkout:", err);
+            alert("Failed to create checkout. Please try again.");
+            setPurchasingPackage(null);
         }
     };
 
@@ -181,10 +207,11 @@ export default function PromoMarketplacePage() {
                                     {pkg.label}
                                 </div>
                                 <button
-                                    className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-                                    onClick={() => alert("Payment integration coming soon!")}
+                                    className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                                    onClick={() => handlePurchase(pkg.credits, pkg.price)}
+                                    disabled={purchasingPackage === pkg.credits}
                                 >
-                                    Purchase
+                                    {purchasingPackage === pkg.credits ? "Processing..." : "Purchase"}
                                 </button>
                             </div>
                         </div>
